@@ -1,0 +1,32 @@
+{
+  "name": "api-task",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun --watch src/index.ts",
+    "start": "bun dist/index.js",
+    "lint": "bunx @biomejs/biome check src/",
+    "lint:fix": "bunx @biomejs/biome check src/ --write",
+    "format": "bunx @biomejs/biome format src/ --write",
+    "type-check": "tsc --noEmit",
+    "check": "bun run lint && bun run type-check"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.9",
+    "@types/bun": "latest",
+    "@types/lodash-es": "^4.17.12"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.19",
+    "inngest": "^3.47.0",
+    "ioredis": "^5.8.2",
+    "lodash-es": "^4.17.21",
+    "reflect-metadata": "^0.2.2",
+    "tsyringe": "^4.10.0",
+    "zod": "^4.2.1"
+  }
+}
