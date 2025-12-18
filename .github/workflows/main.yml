@@ -12,6 +12,9 @@ jobs:
       - name: Install Heroku CLI # <- IMPORTANT!!! Make sure the cli is installed before using the action
         run: |
           curl https://cli-assets.heroku.com/install.sh | sh
+      - name: Set Container Stack
+        run: |
+          heroku stack:set container
       - name: Build, Push and Deploy to Heroku # set whatever name you want to this step
         id: heroku
         uses: jctaveras/heroku-deploy@v3.1.0 # use the latest version of the action
