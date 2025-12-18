@@ -5,7 +5,6 @@
   "private": true,
   "scripts": {
     "dev": "bun --watch src/index.ts",
-    "start": "bun dist/index.js",
     "lint": "bunx @biomejs/biome check src/",
     "lint:fix": "bunx @biomejs/biome check src/ --write",
     "format": "bunx @biomejs/biome format src/ --write",

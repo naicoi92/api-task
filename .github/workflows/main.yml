@@ -1,18 +1,25 @@
-name: Deploy
+name: Deploy to Heroku
 
 on:
   workflow_dispatch:
-
+env:
+  EMAIL: "naicoi@lttech.vn"
+  APP_NAME: "api-task-techio"
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v6
+      ### ⬇ IMPORTANT PART ⬇ ###
       - name: Install Heroku CLI # <- IMPORTANT!!! Make sure the cli is installed before using the action
         run: |
           curl https://cli-assets.heroku.com/install.sh | sh
       - uses: akhileshns/heroku-deploy@v3.14.15 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "api-task-techio" #Must be unique in Heroku
-          heroku_email: "naicoi@lttech.vn"
+          heroku_app_name: ${{env.APP_NAME}}
+          heroku_email: ${{env.EMAIL}}
+          stack: "container"
+          usedocker: true
+
+      ### ⬆ IMPORTANT PART ⬆ ###
