@@ -16,14 +16,18 @@ import { TOKEN } from "../token";
 	},
 ])
 export class BunServer {
+	#port: string;
 	constructor(
 		@inject(TOKEN.TaskCreateHandler)
 		private readonly createHandler: TaskCreateHandler,
 		@inject(TOKEN.TaskStatusHandler)
 		private readonly statusHandler: TaskStatusHandler,
-	) {}
+	) {
+		this.#port = process.env.PORT || "3000";
+	}
 	async start() {
 		Bun.serve({
+			port: this.#port,
 			routes: {
 				"/task": {
 					POST: async (request: Request) =>
