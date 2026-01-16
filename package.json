@@ -20,6 +20,7 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@inngest/realtime": "^0.4.5",
     "dayjs": "^1.11.19",
     "inngest": "^3.47.0",
     "ioredis": "^5.8.2",

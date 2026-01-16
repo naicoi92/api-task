@@ -3,6 +3,10 @@ import type { TaskEntity } from "../entities/task.entity";
 
 export interface TaskCreator {
 	inputSchema: z.ZodSchema;
-	create<T = unknown>(token: string, input: T): Promise<TaskEntity>;
+	create<T = unknown>(
+		taskName: string,
+		token: string,
+		input: T,
+	): Promise<TaskEntity>;
 	isSupportTask(name: string): boolean;
 }
