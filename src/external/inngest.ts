@@ -16,6 +16,6 @@ export const captchaTSInngest = once(
 			id: "captcha-ts",
 			baseUrl: "https://mct-inngest.fly.dev",
 			eventKey:
-				"f6e20335b177f62ff5ac13014775c031365840de9cfc788593383e63973ba59e",
+				"bd29fe2fca42b4b607024edd591a181e431318176b2dfbd9644f177745795ddc",
 		}),
 );
