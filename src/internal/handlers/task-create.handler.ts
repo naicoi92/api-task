@@ -24,7 +24,7 @@ export class TaskCreateHandler implements RequestHandler {
 		const provider = this.factory.getProvider(data.name);
 		const token = randomUUIDv7();
 		const [task] = await Promise.all([
-			provider.create(token, data.data),
+			provider.create(data.name, token, data.data),
 			this.event.setEvent({
 				name: data.name,
 				token,
