@@ -1,14 +1,20 @@
 import { container } from "tsyringe";
-import { CamoufoxProvider } from "@/external/providers/camoufox.provider";
 import { CaptchaTSProvider } from "@/external/providers/captcha-ts.provider";
+import { InngestProvider } from "@/external/providers/inngest.provider";
+import { RecaptchaV2Provider } from "@/external/providers/recaptcha-v2.provider";
+import { RecaptchaV3Provider } from "@/external/providers/recaptcha-v3.provider";
 import { TaskEventService } from "@/external/task-event";
 import { BunServer } from "./servers/bun.server";
 import { TOKEN } from "./token";
 
-container.registerSingleton(TOKEN.TaskCreateProvider, CamoufoxProvider);
-container.registerSingleton(TOKEN.TaskStatusProvider, CamoufoxProvider);
+container.registerSingleton(TOKEN.TaskCreateProvider, InngestProvider);
+container.registerSingleton(TOKEN.TaskStatusProvider, InngestProvider);
 container.registerSingleton(TOKEN.TaskCreateProvider, CaptchaTSProvider);
 container.registerSingleton(TOKEN.TaskStatusProvider, CaptchaTSProvider);
+container.registerSingleton(TOKEN.TaskCreateProvider, RecaptchaV2Provider);
+container.registerSingleton(TOKEN.TaskStatusProvider, RecaptchaV2Provider);
+container.registerSingleton(TOKEN.TaskCreateProvider, RecaptchaV3Provider);
+container.registerSingleton(TOKEN.TaskStatusProvider, RecaptchaV3Provider);
 container.registerSingleton(TOKEN.TaskEvent, TaskEventService);
 container.registerSingleton(TOKEN.Server, BunServer);
 export { container };

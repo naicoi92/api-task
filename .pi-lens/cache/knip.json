@@ -1,0 +1,48 @@
+{
+  "success": true,
+  "issues": [
+    {
+      "type": "dependency",
+      "name": "@inngest/realtime",
+      "file": "package.json",
+      "line": 23
+    },
+    {
+      "type": "export",
+      "name": "CookieSameSiteSchema",
+      "file": "src/domains/schemas/cookie.schema.ts",
+      "line": 6
+    },
+    {
+      "type": "export",
+      "name": "CookieExpiresSchema",
+      "file": "src/domains/schemas/cookie.schema.ts",
+      "line": 16
+    }
+  ],
+  "unusedExports": [
+    {
+      "type": "export",
+      "name": "CookieSameSiteSchema",
+      "file": "src/domains/schemas/cookie.schema.ts",
+      "line": 6
+    },
+    {
+      "type": "export",
+      "name": "CookieExpiresSchema",
+      "file": "src/domains/schemas/cookie.schema.ts",
+      "line": 16
+    }
+  ],
+  "unusedFiles": [],
+  "unusedDeps": [
+    {
+      "type": "dependency",
+      "name": "@inngest/realtime",
+      "file": "package.json",
+      "line": 23
+    }
+  ],
+  "unlistedDeps": [],
+  "summary": "Found 3 issues"
+}

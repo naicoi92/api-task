@@ -2,77 +2,76 @@ import type { Inngest } from "inngest";
 import type IORedis from "ioredis";
 import { isEmpty } from "lodash-es";
 import { singleton } from "tsyringe";
-import { CloudflareEntity } from "@/domains/entities/cloudflare.entity";
+import { RecaptchaEntity } from "@/domains/entities/recaptcha.entity";
 import type {
-	CloudflareInput,
-	CloudflareOutput,
-} from "@/domains/types/cloudflare.type";
+	RecaptchaOutput,
+	RecaptchaV3Input,
+} from "@/domains/types/recaptcha.type";
 import { TaskEntity } from "../../domains/entities/task.entity";
 import { TaskStatus } from "../../domains/enums/status.enum";
 import type { TaskCreator } from "../../domains/interfaces/create.interface";
 import type { TaskResult } from "../../domains/interfaces/result.interface";
 import {
-	CloudflareInputSchema,
-	CloudflareOutputSchema,
-} from "../../domains/schemas/cloudflare.schema";
-import { captchaTSInngest } from "../inngest";
+	RecaptchaOutputSchema,
+	RecaptchaV3InputSchema,
+} from "../../domains/schemas/recaptcha.schema";
+import { cloudflareInngest } from "../inngest";
 import { ioredis } from "../ioredis";
 
 @singleton()
-export class CaptchaTSProvider implements TaskCreator, TaskResult {
-	inputSchema = CloudflareInputSchema;
+export class RecaptchaV3Provider implements TaskCreator, TaskResult {
+	inputSchema = RecaptchaV3InputSchema;
 	private inngest: Inngest;
 	private redis: IORedis;
-	private supportTasks: string[] = [
-		"cloudflare",
-		"cloudflare/playwright",
-		"cloudflare/playwright.browserless",
-	];
+
+	private static readonly TASK_NAME = "recaptcha-v3";
+	private static readonly REDIS_PREFIX = "recaptcha-v3";
+
 	constructor() {
-		this.inngest = captchaTSInngest();
+		this.inngest = cloudflareInngest();
 		this.redis = ioredis();
 	}
+
 	isSupportTask(name: string): boolean {
-		return this.supportTasks.includes(name);
+		return name === RecaptchaV3Provider.TASK_NAME;
 	}
+
 	async create(
-		taskName: string,
+		_taskName: string,
 		token: string,
 		input: unknown,
 	): Promise<TaskEntity> {
-		const data = CloudflareInputSchema.parse(input);
-		await Promise.all([
-			this.sendEvent(taskName, token, data),
-			this.saveRedis(token),
-		]);
+		const data = RecaptchaV3InputSchema.parse(input);
+		await Promise.all([this.sendEvent(token, data), this.saveRedis(token)]);
 		return new TaskEntity(token);
 	}
+
 	async getTask(token: string): Promise<TaskEntity> {
 		const task = new TaskEntity(token);
 		const data = await this.getRedis(token);
-		const cloudflareEntity = new CloudflareEntity(data);
-		task.setData(cloudflareEntity);
+		const recaptchaEntity = new RecaptchaEntity(data);
+		task.setData(recaptchaEntity);
 		return task;
 	}
-	private async sendEvent(
-		taskName: string,
-		token: string,
-		input: CloudflareInput,
-	) {
+
+	private async sendEvent(token: string, input: RecaptchaV3Input) {
 		await this.inngest.send({
-			name: taskName,
+			name: RecaptchaV3Provider.TASK_NAME,
 			data: {
-				token,
+				id: token,
 				url: input.url,
-				selector: input.selector,
+				siteKey: input.siteKey,
+				action: input.action,
+				enterprise: input.enterprise,
 				proxy: input.proxy,
 			},
 		});
 	}
-	private async getRedis(token: string): Promise<CloudflareOutput> {
-		const key = `cloudflare:${token}`;
+
+	private async getRedis(token: string): Promise<RecaptchaOutput> {
+		const key = `${RecaptchaV3Provider.REDIS_PREFIX}:${token}`;
 		const data = await this.redis.hgetall(key);
-		return CloudflareOutputSchema.parse(
+		return RecaptchaOutputSchema.parse(
 			isEmpty(data)
 				? {
 						status: "error",
@@ -81,8 +80,9 @@ export class CaptchaTSProvider implements TaskCreator, TaskResult {
 				: data,
 		);
 	}
+
 	private async saveRedis(token: string) {
-		const key = `cloudflare:${token}`;
+		const key = `${RecaptchaV3Provider.REDIS_PREFIX}:${token}`;
 		await this.redis
 			.pipeline()
 			.hset(key, {

@@ -15,36 +15,33 @@ import {
 	CloudflareInputSchema,
 	CloudflareOutputSchema,
 } from "../../domains/schemas/cloudflare.schema";
-import { captchaTSInngest } from "../inngest";
+import { cloudflareInngest } from "../inngest";
 import { ioredis } from "../ioredis";
 
 @singleton()
-export class CaptchaTSProvider implements TaskCreator, TaskResult {
+export class InngestProvider implements TaskCreator, TaskResult {
 	inputSchema = CloudflareInputSchema;
 	private inngest: Inngest;
 	private redis: IORedis;
 	private supportTasks: string[] = [
+		"cloudflare.camoufox",
+		"cloudflare.cloak",
 		"cloudflare",
-		"cloudflare/playwright",
-		"cloudflare/playwright.browserless",
 	];
 	constructor() {
-		this.inngest = captchaTSInngest();
+		this.inngest = cloudflareInngest();
 		this.redis = ioredis();
 	}
 	isSupportTask(name: string): boolean {
 		return this.supportTasks.includes(name);
 	}
 	async create(
-		taskName: string,
+		_taskName: string,
 		token: string,
 		input: unknown,
 	): Promise<TaskEntity> {
 		const data = CloudflareInputSchema.parse(input);
-		await Promise.all([
-			this.sendEvent(taskName, token, data),
-			this.saveRedis(token),
-		]);
+		await Promise.all([this.sendEvent(token, data), this.saveRedis(token)]);
 		return new TaskEntity(token);
 	}
 	async getTask(token: string): Promise<TaskEntity> {
@@ -54,15 +51,13 @@ export class CaptchaTSProvider implements TaskCreator, TaskResult {
 		task.setData(cloudflareEntity);
 		return task;
 	}
-	private async sendEvent(
-		taskName: string,
-		token: string,
-		input: CloudflareInput,
-	) {
+	// All supported tasks (cloudflare, cloudflare.camoufox, cloudflare.cloak)
+	// map to the single "cloudflare" event — the worker only listens on that name.
+	private async sendEvent(token: string, input: CloudflareInput) {
 		await this.inngest.send({
-			name: taskName,
+			name: "cloudflare",
 			data: {
-				token,
+				id: token,
 				url: input.url,
 				selector: input.selector,
 				proxy: input.proxy,

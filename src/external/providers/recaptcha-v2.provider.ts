@@ -2,66 +2,76 @@ import type { Inngest } from "inngest";
 import type IORedis from "ioredis";
 import { isEmpty } from "lodash-es";
 import { singleton } from "tsyringe";
-import { CloudflareEntity } from "@/domains/entities/cloudflare.entity";
+import { RecaptchaEntity } from "@/domains/entities/recaptcha.entity";
 import type {
-	CloudflareInput,
-	CloudflareOutput,
-} from "@/domains/types/cloudflare.type";
+	RecaptchaOutput,
+	RecaptchaV2Input,
+} from "@/domains/types/recaptcha.type";
 import { TaskEntity } from "../../domains/entities/task.entity";
 import { TaskStatus } from "../../domains/enums/status.enum";
 import type { TaskCreator } from "../../domains/interfaces/create.interface";
 import type { TaskResult } from "../../domains/interfaces/result.interface";
 import {
-	CloudflareInputSchema,
-	CloudflareOutputSchema,
-} from "../../domains/schemas/cloudflare.schema";
+	RecaptchaOutputSchema,
+	RecaptchaV2InputSchema,
+} from "../../domains/schemas/recaptcha.schema";
 import { cloudflareInngest } from "../inngest";
 import { ioredis } from "../ioredis";
 
 @singleton()
-export class CamoufoxProvider implements TaskCreator, TaskResult {
-	inputSchema = CloudflareInputSchema;
+export class RecaptchaV2Provider implements TaskCreator, TaskResult {
+	inputSchema = RecaptchaV2InputSchema;
 	private inngest: Inngest;
 	private redis: IORedis;
-	private supportTasks: string[] = ["cloudflare.camoufox"];
+
+	private static readonly TASK_NAME = "recaptcha-v2";
+	private static readonly REDIS_PREFIX = "recaptcha-v2";
+
 	constructor() {
 		this.inngest = cloudflareInngest();
 		this.redis = ioredis();
 	}
+
 	isSupportTask(name: string): boolean {
-		return this.supportTasks.includes(name);
+		return name === RecaptchaV2Provider.TASK_NAME;
 	}
+
 	async create(
 		_taskName: string,
 		token: string,
 		input: unknown,
 	): Promise<TaskEntity> {
-		const data = CloudflareInputSchema.parse(input);
+		const data = RecaptchaV2InputSchema.parse(input);
 		await Promise.all([this.sendEvent(token, data), this.saveRedis(token)]);
 		return new TaskEntity(token);
 	}
+
 	async getTask(token: string): Promise<TaskEntity> {
 		const task = new TaskEntity(token);
 		const data = await this.getRedis(token);
-		const cloudflareEntity = new CloudflareEntity(data);
-		task.setData(cloudflareEntity);
+		const recaptchaEntity = new RecaptchaEntity(data);
+		task.setData(recaptchaEntity);
 		return task;
 	}
-	private async sendEvent(token: string, input: CloudflareInput) {
-		this.inngest.send({
-			name: "cloudflare",
+
+	private async sendEvent(token: string, input: RecaptchaV2Input) {
+		await this.inngest.send({
+			name: RecaptchaV2Provider.TASK_NAME,
 			data: {
 				id: token,
 				url: input.url,
-				selector: input.selector,
+				siteKey: input.siteKey,
+				invisible: input.invisible,
+				enterprise: input.enterprise,
 				proxy: input.proxy,
 			},
 		});
 	}
-	private async getRedis(token: string): Promise<CloudflareOutput> {
-		const key = `cloudflare:${token}`;
+
+	private async getRedis(token: string): Promise<RecaptchaOutput> {
+		const key = `${RecaptchaV2Provider.REDIS_PREFIX}:${token}`;
 		const data = await this.redis.hgetall(key);
-		return CloudflareOutputSchema.parse(
+		return RecaptchaOutputSchema.parse(
 			isEmpty(data)
 				? {
 						status: "error",
@@ -70,8 +80,9 @@ export class CamoufoxProvider implements TaskCreator, TaskResult {
 				: data,
 		);
 	}
+
 	private async saveRedis(token: string) {
-		const key = `cloudflare:${token}`;
+		const key = `${RecaptchaV2Provider.REDIS_PREFIX}:${token}`;
 		await this.redis
 			.pipeline()
 			.hset(key, {
