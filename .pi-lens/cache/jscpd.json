@@ -1,0 +1,64 @@
+{
+  "success": true,
+  "clones": [
+    {
+      "fileA": "src/external/providers/recaptcha-v2.provider.ts",
+      "startA": 44,
+      "fileB": "src/external/providers/recaptcha-v3.provider.ts",
+      "startB": 44,
+      "lines": 14,
+      "tokens": 0
+    },
+    {
+      "fileA": "src/external/providers/recaptcha-v2.provider.ts",
+      "startA": 72,
+      "fileB": "src/external/providers/recaptcha-v3.provider.ts",
+      "startB": 72,
+      "lines": 14,
+      "tokens": 0
+    },
+    {
+      "fileA": "src/external/providers/inngest.provider.ts",
+      "startA": 43,
+      "fileB": "src/external/providers/recaptcha-v3.provider.ts",
+      "startB": 44,
+      "lines": 8,
+      "tokens": 0
+    },
+    {
+      "fileA": "src/external/providers/captcha-ts.provider.ts",
+      "startA": 1,
+      "fileB": "src/external/providers/inngest.provider.ts",
+      "startB": 1,
+      "lines": 18,
+      "tokens": 0
+    },
+    {
+      "fileA": "src/external/providers/captcha-ts.provider.ts",
+      "startA": 47,
+      "fileB": "src/external/providers/inngest.provider.ts",
+      "startB": 44,
+      "lines": 11,
+      "tokens": 0
+    },
+    {
+      "fileA": "src/external/providers/captcha-ts.provider.ts",
+      "startA": 65,
+      "fileB": "src/external/providers/inngest.provider.ts",
+      "startB": 60,
+      "lines": 30,
+      "tokens": 0
+    },
+    {
+      "fileA": "src/domains/schemas/cloudflare.schema.ts",
+      "startA": 18,
+      "fileB": "src/domains/schemas/recaptcha.schema.ts",
+      "startB": 24,
+      "lines": 10,
+      "tokens": 0
+    }
+  ],
+  "duplicatedLines": 98,
+  "totalLines": 818,
+  "percentage": 11.98
+}

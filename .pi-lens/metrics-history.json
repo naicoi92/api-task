@@ -1,0 +1,156 @@
+{
+  "version": 1,
+  "files": {
+    "src/external/providers/recaptcha-v2.provider.ts": {
+      "latest": {
+        "commit": "90385e5",
+        "timestamp": "2026-05-23T23:17:07.758Z",
+        "mi": 36.8,
+        "cognitive": 3,
+        "nesting": 2,
+        "lines": 85,
+        "maxCyclomatic": 2,
+        "entropy": 5.77
+      },
+      "history": [
+        {
+          "commit": "90385e5",
+          "timestamp": "2026-05-23T23:17:07.758Z",
+          "mi": 36.8,
+          "cognitive": 3,
+          "nesting": 2,
+          "lines": 85,
+          "maxCyclomatic": 2,
+          "entropy": 5.77
+        }
+      ],
+      "trend": "stable"
+    },
+    "src/domains/schemas/recaptcha.schema.ts": {
+      "latest": {
+        "commit": "90385e5",
+        "timestamp": "2026-05-23T23:17:07.777Z",
+        "mi": 49.5,
+        "cognitive": 0,
+        "nesting": 0,
+        "lines": 30,
+        "maxCyclomatic": 1,
+        "entropy": 4.75
+      },
+      "history": [
+        {
+          "commit": "90385e5",
+          "timestamp": "2026-05-23T23:17:07.777Z",
+          "mi": 49.5,
+          "cognitive": 0,
+          "nesting": 0,
+          "lines": 30,
+          "maxCyclomatic": 1,
+          "entropy": 4.75
+        }
+      ],
+      "trend": "stable"
+    },
+    "src/domains/types/recaptcha.type.ts": {
+      "latest": {
+        "commit": "90385e5",
+        "timestamp": "2026-05-23T23:17:07.933Z",
+        "mi": 66.6,
+        "cognitive": 0,
+        "nesting": 0,
+        "lines": 9,
+        "maxCyclomatic": 1,
+        "entropy": 3.64
+      },
+      "history": [
+        {
+          "commit": "90385e5",
+          "timestamp": "2026-05-23T23:17:07.933Z",
+          "mi": 66.6,
+          "cognitive": 0,
+          "nesting": 0,
+          "lines": 9,
+          "maxCyclomatic": 1,
+          "entropy": 3.64
+        }
+      ],
+      "trend": "stable"
+    },
+    "src/domains/entities/recaptcha.entity.ts": {
+      "latest": {
+        "commit": "90385e5",
+        "timestamp": "2026-05-23T23:17:07.951Z",
+        "mi": 58.7,
+        "cognitive": 0,
+        "nesting": 2,
+        "lines": 17,
+        "maxCyclomatic": 1,
+        "entropy": 4.62
+      },
+      "history": [
+        {
+          "commit": "90385e5",
+          "timestamp": "2026-05-23T23:17:07.951Z",
+          "mi": 58.7,
+          "cognitive": 0,
+          "nesting": 2,
+          "lines": 17,
+          "maxCyclomatic": 1,
+          "entropy": 4.62
+        }
+      ],
+      "trend": "stable"
+    },
+    "src/external/providers/captcha-ts.provider.ts": {
+      "latest": {
+        "commit": "90385e5",
+        "timestamp": "2026-05-23T23:17:13.008Z",
+        "mi": 36.2,
+        "cognitive": 3,
+        "nesting": 2,
+        "lines": 93,
+        "maxCyclomatic": 2,
+        "entropy": 5.61
+      },
+      "history": [
+        {
+          "commit": "90385e5",
+          "timestamp": "2026-05-23T23:17:13.008Z",
+          "mi": 36.2,
+          "cognitive": 3,
+          "nesting": 2,
+          "lines": 93,
+          "maxCyclomatic": 2,
+          "entropy": 5.61
+        }
+      ],
+      "trend": "stable"
+    },
+    "src/external/providers/recaptcha-v3.provider.ts": {
+      "latest": {
+        "commit": "90385e5",
+        "timestamp": "2026-05-23T23:17:13.026Z",
+        "mi": 36.8,
+        "cognitive": 3,
+        "nesting": 2,
+        "lines": 85,
+        "maxCyclomatic": 2,
+        "entropy": 5.77
+      },
+      "history": [
+        {
+          "commit": "90385e5",
+          "timestamp": "2026-05-23T23:17:13.026Z",
+          "mi": 36.8,
+          "cognitive": 3,
+          "nesting": 2,
+          "lines": 85,
+          "maxCyclomatic": 2,
+          "entropy": 5.77
+        }
+      ],
+      "trend": "stable"
+    }
+  },
+  "capturedAt": "2026-05-23T23:17:18.027Z"
+}

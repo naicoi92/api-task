@@ -6,6 +6,7 @@ export const RecaptchaV2InputSchema = z.object({
 	siteKey: z.string(),
 	invisible: z.boolean().default(false),
 	enterprise: z.boolean().default(false),
+	payload: z.object({ action: z.string() }).optional(),
 	proxy: z.url().optional(),
 });
 

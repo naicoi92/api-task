@@ -63,6 +63,7 @@ export class RecaptchaV2Provider implements TaskCreator, TaskResult {
 				siteKey: input.siteKey,
 				invisible: input.invisible,
 				enterprise: input.enterprise,
+				payload: input.payload,
 				proxy: input.proxy,
 			},
 		});
